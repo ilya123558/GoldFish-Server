@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model cotalog {
+  url        String     @id
+  title      String
+  categories category[]
+  products   product[]
+}
+
+model category {
+  url        String    @id
+  title      String
+  products   product[]
+  cotalog    cotalog?  @relation(fields: [cotalogUrl], references: [url])
+  cotalogUrl String?
+}
+
+model product {
+  id          Int      @id @default(autoincrement())
+  cotalog     cotalog  @relation(fields: [cotalogUrl], references: [url])
+  category    category @relation(fields: [categoryUrl], references: [url])
+  cotalogUrl  String
+  categoryUrl String
+  title       String
+  description String
+  ageLimit    Int
+  imgSrc      String
+  playersFrom Int
+  playersTo   Int
+  price       Int
+  timeFrom    Int
+  timeTo      Int
+  product     String
+  discount    Int?
+  oldPrice    Int?
+}
+
+model event {
+  url      String @id
+  title    String
+  subTitle String
+  date     String
+}
